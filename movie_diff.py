@@ -2,7 +2,8 @@
 """
 Movie Diff - Christmas Movie Collection Manager
 
-Main CLI entry point for comparing owned movies against Amazon lists.
+Main entry point for comparing owned movies against Amazon lists.
+Supports both GUI and CLI modes.
 """
 
 import argparse
@@ -29,28 +30,37 @@ class MovieDiffCLI:
             formatter_class=argparse.RawDescriptionHelpFormatter,
             epilog="""
 Examples:
-  # Compare against Amazon product page
-  python movie_diff.py --owned found_christmas_movies.csv --amazon "https://amazon.com/.../dp/..."
+  # Launch GUI mode (interactive)
+  python movie_diff.py --gui
+  
+  # CLI mode with Amazon product page
+  python movie_diff.py --amazon "https://amazon.com/.../dp/..."
+  
+  # CLI with custom CSV file
+  python movie_diff.py --owned my_movies.csv --amazon "URL" --verbose
   
   # Adjust matching threshold
-  python movie_diff.py --owned movies.csv --amazon "URL" --threshold 85
-  
-  # Specify output directory and enable verbose mode
-  python movie_diff.py --owned movies.csv --amazon "URL" --output reports/ --verbose
+  python movie_diff.py --amazon "URL" --threshold 85 --verbose
             """
         )
         
-        # Required arguments
+        # Mode selection
         parser.add_argument(
-            '--owned',
-            required=True,
-            help='Path to CSV file with owned movies'
+            '--gui',
+            action='store_true',
+            help='Launch graphical user interface (requires tkinter)'
         )
         
-        # Source argument (required)
+        # Required arguments (not required in GUI mode)
+        parser.add_argument(
+            '--owned',
+            default='found_christmas_movies.csv',
+            help='Path to CSV file with owned movies (default: found_christmas_movies.csv)'
+        )
+        
+        # Source argument
         parser.add_argument(
             '--amazon',
-            required=True,
             help='Amazon product page URL to scrape (e.g., /dp/... URLs)'
         )
         
@@ -87,12 +97,33 @@ Examples:
     
     def run(self, args=None):
         """
-        Run the CLI application.
+        Run the application (GUI or CLI mode).
         
         Args:
             args: Command-line arguments (uses sys.argv if None)
         """
         args = self.parser.parse_args(args)
+        
+        # GUI mode
+        if args.gui:
+            try:
+                from src.gui import launch_gui
+                launch_gui(default_owned_csv=args.owned)
+                return 0
+            except ImportError as e:
+                print("❌ Error: GUI mode requires tkinter", file=sys.stderr)
+                print("Install tkinter with: sudo apt install python3-tk", file=sys.stderr)
+                return 1
+            except Exception as e:
+                print(f"❌ GUI Error: {e}", file=sys.stderr)
+                return 1
+        
+        # CLI mode - require amazon URL
+        if not args.amazon:
+            print("❌ Error: --amazon URL is required in CLI mode", file=sys.stderr)
+            print("Use --gui for graphical interface, or provide --amazon URL", file=sys.stderr)
+            self.parser.print_help()
+            return 1
         
         try:
             verbose = args.verbose

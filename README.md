@@ -2,6 +2,14 @@
 
 Compare your owned Christmas movie collection against Amazon product pages to identify which movies you already own and which are new.
 
+---
+
+## ⚠️ Disclaimer
+
+**This application was "vibe coded" using Cursor AI.** While there was a human in the loop throughout development, this should be considered a **quick and dirty utility** - not production-grade software. Use at your own risk and expect rough edges.
+
+---
+
 ## Features
 
 - 🎬 **GUI Mode** - Easy-to-use graphical interface with URL dialog
@@ -233,13 +241,27 @@ which chromium-browser
 
 MIT License - see LICENSE file
 
+## Development
+
+This application was developed with **Cursor AI** as a proof-of-concept tool. It demonstrates AI-assisted coding but should not be considered enterprise-ready or fully tested for all edge cases.
+
+**AI Development Notes:**
+- Primary coder: Cursor AI
+- Human oversight: Present throughout
+- Testing: Limited to specific use cases
+- Code quality: Functional but not hardened
+
 ## Contributing
 
-Contributions welcome! This is a focused tool for comparing movie collections against Amazon product pages.
+Contributions welcome! This is a focused tool for comparing movie collections against Amazon product pages. Given its AI-assisted origins, there's plenty of room for improvement, refactoring, and hardening.
 
 ## Credits
 
-Built with:
+**Development:**
+- AI Assistant: Cursor AI (primary developer)
+- Human Developer: Oversight and requirements
+
+**Technologies:**
 - Selenium for browser automation
 - RapidFuzz for fuzzy string matching
 - Tkinter for GUI

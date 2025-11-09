@@ -1,0 +1,11 @@
+# Lightweight requirements - minimal dependencies for production use
+
+# Web Scraping - Selenium for Amazon product page scraping
+selenium>=4.15.0
+
+# String Matching - Fuzzy matching for movie title comparison
+rapidfuzz>=3.5.0
+
+# Utilities - Automatic ChromeDriver management
+webdriver-manager>=4.0.0
+
